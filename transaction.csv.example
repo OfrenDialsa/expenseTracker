@@ -1,0 +1,4 @@
+ID,Amount,Category,Date,Type
+0,100.00,salary,2025-05-09,income
+1,10.00,gas,2025-05-09,expense
+2,45.00,gist,2025-05-09,income
