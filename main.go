@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
+	"os"
+	"strconv"
 	"time"
 )
 
@@ -58,6 +61,46 @@ func (bt BudgetTracker) DisplayTransaction() {
 			transaction.Date.Format("2006-01-02"),
 			transaction.Type)
 	}
+}
+
+// Get total income or expense
+func (bt BudgetTracker) CalculateTotal(tType string) float64 {
+	var total float64
+	for _, transaction := range bt.transactions {
+		if transaction.Type == tType {
+			total += transaction.Amount
+		}
+	}
+	return total
+}
+
+func (bt BudgetTracker) SavetoCSV(filename string) error {
+	file, err := os.Create(filename)
+
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
+
+	writer.Write([]string{"ID", "Amount", "Category", "Date", "Type"})
+
+	for _, t := range bt.transactions {
+		record := []string{
+			strconv.Itoa(t.ID),
+			fmt.Sprintf("%.2f", t.Amount),
+			t.Category,
+			t.Date.Format("2006-01-02"),
+			t.Type,
+		}
+		writer.Write(record)
+	}
+
+	fmt.Println("Transaction Saved to", filename)
+
+	return nil
 }
 
 func main() {
