@@ -98,7 +98,7 @@ func (bt BudgetTracker) SavetoCSV(filename string) error {
 		writer.Write(record)
 	}
 
-	fmt.Println("Transaction Saved to", filename)
+	fmt.Println("Transaction Saved to ", filename)
 
 	return nil
 }
