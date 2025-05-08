@@ -104,5 +104,65 @@ func (bt BudgetTracker) SavetoCSV(filename string) error {
 }
 
 func main() {
+	bt := BudgetTracker{}
 
+	for {
+		fmt.Println("\n--- Personal Budget Tracker ---")
+		fmt.Println("1. Add Transaction")
+		fmt.Println("2. Display Transactions")
+		fmt.Println("3. Show total Income")
+		fmt.Println("4. Show total Expenses")
+		fmt.Println("5. Save Transaction to CSV file")
+		fmt.Println("6. Exit Program")
+		fmt.Print("Choose option: ")
+
+		var choice int
+		fmt.Scanln(&choice)
+
+		switch choice {
+		case 1:
+			fmt.Print("Enter Amount: ")
+			var amount float64
+			fmt.Scanln(&amount)
+
+			fmt.Print("Enter Category: ")
+			var category string
+			fmt.Scanln(&category)
+
+			fmt.Print("Enter Type(income/expense): ")
+			var tType string
+			fmt.Scanln(&tType)
+
+			bt.AddTransaction(amount, category, tType)
+			fmt.Println("Transaction Added!")
+
+		case 2:
+			bt.DisplayTransaction()
+
+		case 3:
+			fmt.Printf("Total Income: %.2f", bt.CalculateTotal("income"))
+			fmt.Println()
+
+		case 4:
+			fmt.Printf("Total Expense: %.2f", bt.CalculateTotal("expense"))
+			fmt.Println()
+
+		case 5:
+			fmt.Print("Enter filename (e.g. transaction.csv): ")
+			var filename string
+			fmt.Scanln(&filename)
+
+			if err := bt.SavetoCSV(filename); err != nil {
+				fmt.Println("Error saving Transaction: ", err)
+			}
+
+		case 6:
+			fmt.Println("Exiting.....")
+			return
+
+		default:
+			fmt.Println("Invalid Choice!!! Try Again")
+		}
+
+	}
 }
